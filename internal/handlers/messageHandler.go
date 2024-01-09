@@ -11,7 +11,6 @@ import (
 )
 
 func (handler *HandlerService) StoreMessage(w http.ResponseWriter, r *http.Request) {
-	//var form requests.StoreUserRequest
 	var form requests.SendMessageRequest
 
 	errPayload := ProcessRequest(&form, r, w)
@@ -36,9 +35,9 @@ func (handler *HandlerService) StoreMessage(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
-	var userResource resources.UserResource
+	var messageRessource resources.MessageRessource
 
-	resources.GenerateResource(&userResource, message, w)
+	resources.GenerateResource(&messageRessource, message, w)
 }
 
 func (handler *HandlerService) IndexUserChat(w http.ResponseWriter, r *http.Request) {
