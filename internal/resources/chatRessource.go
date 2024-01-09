@@ -1,7 +1,10 @@
 package resources
 
-type Chat struct {
-	Sender   int    `gorm:"not_null" validate:"required"`
-	Receiver int    `gorm:"not_null" validate:"required"`
-	Message  string `gorm:"not_null" validate:"required"`
+type ChatRessource struct {
+	Success bool `json:"success,omitempty"`
+	Data    struct {
+		Sender   int    `json:"sender"`
+		Receiver int    `json:"receiver"`
+		Message  string `json:"message"`
+	} `json:"data"`
 }

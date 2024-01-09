@@ -62,8 +62,7 @@ func (handler *HandlerService) IndexUserChat(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	frontRessource, _ := json.Marshal(found)
-	w.Write(frontRessource)
+	var chatRessource []resources.ChatRessource
 
-	return
+	resources.GenerateResource(&chatRessource, found, w)
 }

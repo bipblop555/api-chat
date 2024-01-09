@@ -12,7 +12,7 @@ func FormRequestCall(next http.Handler) http.Handler {
 	})
 }
 
-func CheckMJWTValidity(next http.Handler) http.Handler {
+func CheckJWTValidity(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(r.Cookie("TokenBearer"))
 
