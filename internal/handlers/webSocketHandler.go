@@ -31,7 +31,6 @@ type WebSocketContext struct {
 }
 
 func HandleWebSocketConnection(w http.ResponseWriter, r *http.Request, ctx *WebSocketContext) {
-	// upgrade en ws
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Println("Erreur lors de la mise à niveau du WebSocket :", err)
@@ -40,7 +39,7 @@ func HandleWebSocketConnection(w http.ResponseWriter, r *http.Request, ctx *WebS
 	defer conn.Close()
 
 	fmt.Println("WebSocket connecté.")
-	clients[conn] = true // Ajoutez le client WebSocket à la liste
+	clients[conn] = true
 
 	for {
 		_, _, err := conn.ReadMessage()

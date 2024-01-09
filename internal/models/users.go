@@ -14,7 +14,7 @@ type User struct {
 	Id        int        `gorm:"column:id;primaryKey"`
 	Email     string     `gorm:"not null;unique_index"`
 	Username  string     `gorm:"not null;unique_index"`
-	Password  string     `gorm:"no null"` // Ne pas store dans la database
+	Password  string     `gorm:"no null"`
 	CreatedAt *time.Time `gorm:"type:timestamp"`
 	UpdatedAt *time.Time `gorm:"type:timestamp;autoUpdateTime:true"`
 	UserLogs  []UserLog  `gorm:"foreignKey:UserID"`
@@ -52,7 +52,6 @@ func (ug *DbGorm) ByUserName(username string) ([]User, error) {
 	return user, nil
 }
 
-// Methode Create pour add user to db
 func (ug *DbGorm) Create(entity interface{}, w http.ResponseWriter) error {
 	db := ug.Db.Table("users").Create(entity)
 
@@ -67,7 +66,6 @@ func (ug *DbGorm) Create(entity interface{}, w http.ResponseWriter) error {
 
 // Authenticate Method is used for Authenticate and Validate login
 func (us *DatabaseProvider) Authenticate(email, password string) (*User, error) {
-	// Vlidate if the user is existed in the database or no
 	foundUser, err := us.ByEmail(email)
 
 	fmt.Println("foundUser => ", foundUser)
@@ -76,7 +74,6 @@ func (us *DatabaseProvider) Authenticate(email, password string) (*User, error) 
 		return nil, err
 	}
 
-	// Compare the login based in the Hash value
 	err = bcrypt.CompareHashAndPassword([]byte(foundUser.Password), []byte(password))
 
 	if err != nil {
