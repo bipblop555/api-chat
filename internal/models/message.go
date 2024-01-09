@@ -45,11 +45,21 @@ func (ug *DbGorm) GetAllLinkedChat(senderID int) ([]Message, error) {
 		Message  string
 	}
 
-	db := ug.Db.Model(&Message{}).
-		Select("messages.receiver, users.username, messages.message").
-		Joins("JOIN users ON messages.receiver = users.id").
-		Where("messages.sender = ? AND messages.deleted_at IS NULL AND messages.created_at = (SELECT MAX(created_at) FROM messages WHERE sender = ? AND receiver = messages.receiver AND deleted_at IS NULL LIMIT 50)", senderID, senderID).
-		Find(&messages)
+	fmt.Print(result)
+
+	query := `
+        SELECT messages.id, messages.message, messages.sender, messages.receiver, messages.created_at, messages.deleted_at, users.username
+        FROM messages
+        JOIN users ON messages.receiver = users.id
+        JOIN (
+            SELECT id, ROW_NUMBER() OVER (PARTITION BY receiver ORDER BY created_at DESC) AS rnum
+            FROM messages
+            WHERE deleted_at IS NULL
+        ) AS ranked ON ranked.id = messages.id
+        WHERE ranked.rnum = 1 AND messages.sender = ?
+    `
+
+	db := ug.Db.Raw(query, senderID).Scan(&messages)
 
 	if db.Error != nil {
 		return nil, nil

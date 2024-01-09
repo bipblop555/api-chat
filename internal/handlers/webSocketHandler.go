@@ -79,7 +79,6 @@ func StartSQL(c chan os.Signal) {
 
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
 		HandleWebSocketConnection(w, r, ctx)
-
 	})
 
 	go http.ListenAndServe(":9098", nil)
@@ -112,8 +111,7 @@ func WaitForNotification(l *pq.Listener) {
 			sendToClients([]byte(n.Extra))
 
 		case <-time.After(10 * time.Second):
-			// Aucun événement reçu pendant 10 secondes, vérifiez la connexion
-			fmt.Println("Received no events for 10 seconds, checking connection")
+
 			go func() {
 				l.Ping()
 			}()
