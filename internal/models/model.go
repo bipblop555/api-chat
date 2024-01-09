@@ -2,7 +2,6 @@ package models
 
 import (
 	"App/internal/modules/hash"
-	"App/internal/resources"
 	"database/sql"
 	"errors"
 	"fmt"
@@ -39,7 +38,7 @@ type EntityDB interface {
 
 	ByID(id string, entity interface{}) error
 	ByEmail(email string) (*User, error)
-	ByUserName(username string) ([]resources.UserResource, error)
+	ByUserName(username string) ([]User, error)
 	CreateMessage(entity interface{}, w http.ResponseWriter) error
 	GetAllLinkedChat(senderID int) ([]Message, error)
 	Close() error

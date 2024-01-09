@@ -6,7 +6,6 @@ import (
 
 	"fmt"
 
-	"App/internal/resources"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/datatypes"
 )
@@ -41,13 +40,11 @@ func (ug *DbGorm) ByEmail(email string) (*User, error) {
 	return &user, err
 }
 
-func (ug *DbGorm) ByUserName(username string) ([]resources.UserResource, error) {
-	var user []resources.UserResource
+func (ug *DbGorm) ByUserName(username string) ([]User, error) {
+	var user []User
+
 	db := ug.Db.Table("users").Where("username LIKE ?", username+"%").Limit(50).Find(&user)
 
-	fmt.Print(user)
-
-	//err := first(db, &user)
 	if db.Error != nil {
 		return nil, db.Error
 	}

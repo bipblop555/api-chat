@@ -89,8 +89,6 @@ func (handler *HandlerService) IndexUser(w http.ResponseWriter, r *http.Request)
 	helpers.FillStruct(&user, form.Data.Attributes)
 	found, err := handler.use.ByUserName(user.Username)
 
-	fmt.Print(found)
-
 	if err != nil {
 		w.WriteHeader(http.StatusUnprocessableEntity)
 		errMsg, _ := json.Marshal(map[string]string{"error": err.Error()})
@@ -98,7 +96,7 @@ func (handler *HandlerService) IndexUser(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	var userResource resources.UserResource
+	var userResource []resources.UserResource
 	resources.GenerateResource(&userResource, found, w)
 }
 
