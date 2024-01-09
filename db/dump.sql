@@ -28,8 +28,9 @@ INSERT INTO "users" ("username", "email", "password", "created_at", "updated_at"
 VALUES
     ('tom', 'tom@example.com', '$2a$10$z1Unfo0B28zjo85ulUQ7Y.VQ1zy9biPGAC7XSJeZ.EByCDaX8E.L6', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     ('rayou', 'rayou@example.com', '$2a$10$z1Unfo0B28zjo85ulUQ7Y.VQ1zy9biPGAC7XSJeZ.EByCDaX8E.L6', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-    ('hassan', 'hassan@example.com', '$2a$10$z1Unfo0B28zjo85ulUQ7Y.VQ1zy9biPGAC7XSJeZ.EByCDaX8E.L6', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-
+    ('hassan', 'hassan@example.com', '$2a$10$z1Unfo0B28zjo85ulUQ7Y.VQ1zy9biPGAC7XSJeZ.EByCDaX8E.L6', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('hassannou', 'hassan@example.com', '$2a$10$z1Unfo0B28zjo85ulUQ7Y.VQ1zy9biPGAC7XSJeZ.EByCDaX8E.L6', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+    ('hassaninou', 'hassan@example.com', '$2a$10$z1Unfo0B28zjo85ulUQ7Y.VQ1zy9biPGAC7XSJeZ.EByCDaX8E.L6', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO "messages" ("message", "sender", "receiver", "created_at", "deleted_at")
 VALUES
