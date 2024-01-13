@@ -8,8 +8,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-
-	"github.com/go-chi/chi/v5"
 	// "net/http"
 )
 
@@ -98,43 +96,4 @@ func (handler *HandlerService) IndexUser(w http.ResponseWriter, r *http.Request)
 
 	var userResource []resources.UserResource
 	resources.GenerateResource(&userResource, found, w)
-}
-
-func (handler *HandlerService) Update(w http.ResponseWriter, r *http.Request) {
-	id := helpers.DecodeId(chi.URLParam(r, "id"))
-	role := r.URL.Query().Get("role")
-
-	user := models.User{}
-	err := handler.use.ByID(id, &user)
-
-	if err != nil {
-		// Gérer l'erreur
-		fmt.Println(err)
-	}
-
-	fmt.Println(user)
-
-	err = handler.use.Update(&user, "group_name", role, w)
-	if err != nil {
-		// Gérer l'erreur
-		fmt.Println(err)
-	}
-
-	var userResource resources.UserResource
-
-	resources.GenerateResource(&userResource, user, w)
-}
-
-func (handler *HandlerService) Delete(w http.ResponseWriter, r *http.Request) {
-	id := helpers.DecodeId(chi.URLParam(r, "id"))
-
-	user := models.User{}
-
-	err := handler.use.ByID(id, &user)
-	if err != nil {
-		// Gérer l'erreur
-		fmt.Println(err)
-	}
-
-	models.InitGorm.Db.Delete(&user)
 }

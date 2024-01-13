@@ -5,11 +5,9 @@ type SendMessageRequest struct {
 	Data    struct {
 		Type       string `json:"type"`
 		Attributes struct {
-			Sender   int    `json:"sender" validate:"required"`
-			Receiver int    `json:"receiver" validate:"required"`
-			Message  string `json:"message" validate:"required"`
-			//CreatedAt *time.Time `json:"created-at" gorm:"type:timestamp"`
-			//UpdatedAt *time.Time `json:"updated-at" gorm:"type:timestamp;autoUpdateTime:true"`
+			Sender_id   int    `json:"sender_id" validate:"required"`
+			Receiver_id int    `json:"receiver_id" validate:"required"`
+			Message     string `json:"message" validate:"required"`
 		} `json:"attributes"`
 	} `json:"data"`
 }

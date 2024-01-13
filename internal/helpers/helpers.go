@@ -45,20 +45,9 @@ func HashPassword(password string) string {
 }
 
 func InitOptimus() optimus.Optimus {
-	// err := godotenv.Load()
-
-	// if err != nil {
-	// 	fmt.Println("Failed to load .env file:", err)
-	// }
-	// optimusPrime, _ := strconv.Atoi(os.Getenv("OPTIMUS_PRIME"))
-	// optimusInverse, _ := strconv.Atoi(os.Getenv("OPTIMUS_INVERSE"))
-	// optimusRandom, _ := strconv.Atoi(os.Getenv("OPTIMUS_RANDOM"))
-
 	optimusPrime := 1580030173
 	optimusInverse := 59260789
 	optimusRandom := 1163945558
-
-	// fmt.Println("optimusPrime : ", optimusPrime, "optimusInverse : ", optimusInverse, "optimusRandom : ", optimusRandom)
 
 	return optimus.New(uint64(optimusPrime), uint64(optimusInverse), uint64(optimusRandom))
 }
@@ -133,12 +122,12 @@ func FillStruct(destination interface{}, source interface{}) {
 
 					if destinationPkg == "App/internal/resources" {
 						id := ""
-						checkIDFieldEnd := EndsWithAny(destinationValue.Type().Field(i).Name, "ID", "_id", "_Id", "_ID", "Id")
-						checkIDFieldStart := StartsWith(destinationValue.Type().Field(i).Name, "ID", "id", "Id")
+						/*						checkIDFieldEnd := EndsWithAny(destinationValue.Type().Field(i).Name, "ID", "_id", "_Id", "_ID", "Id")
+												checkIDFieldStart := StartsWith(destinationValue.Type().Field(i).Name, "ID", "id", "Id")*/
 
-						if checkIDFieldEnd || checkIDFieldStart {
-							id = EncodeId(int(sourceValue.Field(j).Int()))
-						}
+						/*				if checkIDFieldEnd || checkIDFieldStart {
+										id = EncodeId(int(sourceValue.Field(j).Int()))
+									}*/
 						if destinationField.CanSet() {
 							if id == "" {
 								destinationField.Set(sourceValue.Field(j))

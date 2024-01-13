@@ -5,7 +5,7 @@ type ChatRequest struct {
 	Data    struct {
 		Type       string `json:"type"`
 		Attributes struct {
-			Sender int `json:"sender" validate:"required"`
+			Sender_id int `json:"sender_id" validate:"required"`
 		} `json:"attributes"`
 	} `json:"data"`
 }

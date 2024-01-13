@@ -4,13 +4,8 @@ import (
 	"App/internal/modules/hash"
 	"database/sql"
 	"errors"
-	"fmt"
-	"net/http"
-	"reflect"
-	"strconv"
-
 	"gorm.io/gorm"
-	"gorm.io/gorm/clause"
+	"net/http"
 	// "gorm.io/datatypes"
 )
 
@@ -34,13 +29,14 @@ var (
 type EntityDB interface {
 	// Alter
 	Create(entity interface{}, w http.ResponseWriter) error
-	Update(entity interface{}, attribute string, value string, w http.ResponseWriter) error
+	Update(entity interface{}, id string, w http.ResponseWriter) error
 
 	ByID(id string, entity interface{}) error
 	ByEmail(email string) (*User, error)
 	ByUserName(username string) ([]User, error)
 	CreateMessage(entity interface{}, w http.ResponseWriter) error
 	GetAllLinkedChat(senderID int) ([]Message, error)
+	GetAllMessagesFromUser(senderId string, receiverId string) ([]Message, error)
 	Close() error
 	Ping() error
 
@@ -85,24 +81,7 @@ func (ug *DbGorm) ByID(id string, entity interface{}) error {
 }
 
 // Update method to update a user in database
-func (ug *DbGorm) Update(entity interface{}, attribute string, value string, w http.ResponseWriter) error {
-	entityValue := reflect.Indirect(reflect.ValueOf(entity)) // Dereference the pointer if entity is a pointer
-
-	idField := entityValue.FieldByName("Id")
-
-	if !idField.IsValid() || idField.Kind() != reflect.Int || idField.Int() == 0 {
-		return ErrInvalidID
-	}
-
-	id := strconv.Itoa(idField.Interface().(int))
-	fmt.Println(ug.Db.Model(&entity).Where("id = ?", id).Update(attribute, value).Error)
-
-	db := ug.Db.Model(&entity).Clauses(clause.Returning{Columns: []clause.Column{{Name: "group_name"}}}).Where("id = ?", id).Update(attribute, value)
-
-	if db.Error != nil {
-		w.WriteHeader(http.StatusUnprocessableEntity)
-		return db.Error
-	}
+func (ug *DbGorm) Update(entity interface{}, id string, w http.ResponseWriter) error {
 
 	w.WriteHeader(http.StatusCreated)
 	return nil

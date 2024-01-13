@@ -15,13 +15,13 @@ create table "users"
 create table "messages" (
     "id" SERIAL PRIMARY KEY,
     "message" TEXT NOT NULL,
-    "sender" INT NOT NULL,
-    "receiver" INT NOT NULL,
+    "sender_id" INT NOT NULL,
+    "receiver_id" INT NOT NULL,
     "deleted_at" TIMESTAMP,
     "created_at" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" timestamp(0),
-    FOREIGN KEY (sender) REFERENCES "users" (id),
-    FOREIGN KEY (receiver) REFERENCES "users" (id)
+    FOREIGN KEY (sender_id) REFERENCES "users" (id),
+    FOREIGN KEY (receiver_id) REFERENCES "users" (id)
 );
 
 INSERT INTO "users" ("username", "email", "password", "created_at", "updated_at")
@@ -32,17 +32,17 @@ VALUES
     ('hassannou', 'hassan@example.com', '$2a$10$z1Unfo0B28zjo85ulUQ7Y.VQ1zy9biPGAC7XSJeZ.EByCDaX8E.L6', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     ('hassaninou', 'hassan@example.com', '$2a$10$z1Unfo0B28zjo85ulUQ7Y.VQ1zy9biPGAC7XSJeZ.EByCDaX8E.L6', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
-INSERT INTO "messages" ("message", "sender", "receiver", "created_at", "deleted_at")
+INSERT INTO "messages" ("message", "sender_id", "receiver_id", "created_at", "deleted_at")
 VALUES
     ('Salut rayou', 1, 2, CURRENT_TIMESTAMP, NULL),
     ('Salut Tom ', 2, 1, CURRENT_TIMESTAMP, NULL);
 
 
-INSERT INTO "messages" ("message", "sender", "receiver", "created_at", "deleted_at")
+INSERT INTO "messages" ("message", "sender_id", "receiver_id", "created_at", "deleted_at")
 VALUES
     ('Ca va?', 1, 2, CURRENT_TIMESTAMP, NULL);
 
-INSERT INTO "messages" ("message", "sender", "receiver", "created_at", "deleted_at")
+INSERT INTO "messages" ("message", "sender_id", "receiver_id", "created_at", "deleted_at")
 VALUES
     ('Hassan ???????', 1, 3, CURRENT_TIMESTAMP, NULL),
     ('Ca roule et toi ? :)', 2, 1, CURRENT_TIMESTAMP, NULL),
@@ -58,8 +58,8 @@ BEGIN
         'new_message',
         json_build_object(
             'table', TG_TABLE_NAME,
-            'sender', NEW.sender,
-            'receiver', NEW.receiver,
+            'sender_id', NEW.sender_id,
+            'receiver_id', NEW.receiver_id,
             'message', NEW.message,
             'created_at', NEW.created_at
         )::text
