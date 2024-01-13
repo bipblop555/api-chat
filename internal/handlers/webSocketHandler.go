@@ -125,7 +125,7 @@ func WaitForNotification(l *pq.Listener, id string, conn *websocket.Conn) {
 			fmt.Printf("ID : %s\n", id)
 
 			// Vérifiez si le sender_id correspond à l'id du WebSocket
-			if senderID, ok := msgData["sender_id"].(float64); ok && strconv.Itoa(int(senderID)) == id {
+			if receiverId, ok := msgData["receiver_id"].(float64); ok && strconv.Itoa(int(receiverId)) == id {
 				fmt.Println("Received data from channel [", n.Channel, "] :", n.Extra)
 				if err := conn.WriteMessage(websocket.TextMessage, []byte(n.Extra)); err != nil {
 					log.Println("Erreur lors de l'envoi du message WebSocket :", err)
