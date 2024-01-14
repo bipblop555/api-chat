@@ -29,6 +29,10 @@ type MessageChat struct {
 	UpdatedAt         *time.Time `gorm:"type:timestamp;autoUpdateTime:true"`
 }
 
+type DeleteMessage struct {
+	Id      int    `json:"id"`
+	Message string `json:"message"`
+}
 type Sender struct {
 	Sender_id int `gorm:"not_null" validate:"required"`
 }
@@ -75,6 +79,19 @@ func (ug *DbGorm) GetAllLinkedChat(senderID int) ([]MessageChat, error) {
 	return messages, nil
 }
 
+func (ug *DbGorm) Delete(entity interface{}, id string) (DeleteMessage, error) {
+	var messages DeleteMessage
+
+	db := ug.Db.Table("messages").Where("id = ?", id).Scan(&messages).Delete(&messages)
+
+	if db.Error != nil {
+		return messages, nil
+	}
+
+	fmt.Print(messages.Id, messages.Message)
+
+	return messages, nil
+}
 func (ug *DbGorm) GetAllMessagesFromUser(senderId string, receiverId string) ([]Message, error) {
 	var messages []Message
 	db := ug.Db.Table("messages").Where("sender_id = ? AND receiver_id = ?", senderId, receiverId).Limit(1000).Order("created_at").Scan(&messages)

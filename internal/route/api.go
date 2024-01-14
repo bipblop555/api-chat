@@ -17,7 +17,7 @@ func route(router *chi.Mux, handlerService *handlers.HandlerService) {
 	router.Post("/get-all-chat", handlerService.IndexUserChat)
 
 	router.Post("/send-message", handlerService.StoreMessage)
-	router.Delete("/delete-message/{id}", handlerService.Delete)
+	router.Delete("/delete-message/{id}", handlerService.DeleteMessage)
 	router.Patch("/update-message/{id}", handlerService.Update)
 	router.Get("/messages/get-all/{senderId}/{receiverId}", handlerService.GetAllMessageFrom)
 

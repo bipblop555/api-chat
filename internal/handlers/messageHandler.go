@@ -67,37 +67,20 @@ func (handler *HandlerService) IndexUserChat(w http.ResponseWriter, r *http.Requ
 	resources.GenerateResource(&chatRessource, found, w)
 }
 
-func (handler *HandlerService) Delete(w http.ResponseWriter, r *http.Request) {
+func (handler *HandlerService) DeleteMessage(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 
 	message := models.Message{}
 
-	err := handler.use.ByID(id, &message)
+	deleted, err := handler.use.Delete(message, id)
+
 	if err != nil {
-		// Gérer l'erreur
 		fmt.Println(err)
 	}
 
-	// Utilisez simplement Delete avec l'instance de la structure de modèle
-	request := models.InitGorm.Db.Where("id = ?", id).Delete(&message)
-	fmt.Println(request)
-	/*if request != nil {
-		success := models.Success{Success: false}
+	var msgRessource resources.DeleteMessageRessource
 
-		successStatus, _ := json.Marshal(success)
-
-		w.WriteHeader(http.StatusUnprocessableEntity)
-		w.Write(successStatus)
-		return
-	} else {
-
-		success := models.Success{Success: true}
-
-		successStatus, _ := json.Marshal(success)
-
-		w.WriteHeader(http.StatusUnprocessableEntity)
-		w.Write(successStatus)
-	}*/
+	resources.GenerateResource(&msgRessource, deleted, w)
 }
 
 func (handler *HandlerService) Update(w http.ResponseWriter, r *http.Request) {

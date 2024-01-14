@@ -30,7 +30,7 @@ type EntityDB interface {
 	// Alter
 	Create(entity interface{}, w http.ResponseWriter) error
 	Update(entity interface{}, id string, w http.ResponseWriter) error
-
+	Delete(entity interface{}, id string) (DeleteMessage, error)
 	ByID(id string, entity interface{}) error
 	ByEmail(email string) (*User, error)
 	ByUserName(username string) ([]User, error)
