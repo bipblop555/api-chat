@@ -20,6 +20,15 @@ type Message struct {
 	UpdatedAt   *time.Time `gorm:"type:timestamp;autoUpdateTime:true"`
 }
 
+type MessageChat struct {
+	Sender_id         int        `gorm:"not_null" validate:"required"`
+	Receiver_id       int        `gorm:"not_null" validate:"required"`
+	Message           string     `gorm:"not_null" validate:"required"`
+	Receiver_username string     `gorm:"no_null"`
+	CreatedAt         *time.Time `gorm:"type:timestamp"`
+	UpdatedAt         *time.Time `gorm:"type:timestamp;autoUpdateTime:true"`
+}
+
 type Sender struct {
 	Sender_id int `gorm:"not_null" validate:"required"`
 }
@@ -38,28 +47,22 @@ func (ug *DbGorm) CreateMessage(entity interface{}, w http.ResponseWriter) error
 	return nil
 }
 
-func (ug *DbGorm) GetAllLinkedChat(senderID int) ([]Message, error) {
-	var messages []Message
-
-	var result []struct {
-		Receiver string
-		Username string
-		Message  string
-	}
-
-	fmt.Print(result)
+func (ug *DbGorm) GetAllLinkedChat(senderID int) ([]MessageChat, error) {
+	var messages []MessageChat
 
 	query := `
-        SELECT messages.id, messages.message, messages.sender_id, messages.receiver_id, messages.created_at, messages.deleted_at, users.username
+    SELECT messages.id, messages.message, messages.sender_id, messages.receiver_id, messages.created_at, messages.deleted_at,
+           sender.username AS sender_username, receiver.username AS receiver_username
+    FROM messages
+    JOIN users AS sender ON messages.sender_id = sender.id
+    JOIN users AS receiver ON messages.receiver_id = receiver.id
+    JOIN (
+        SELECT id, ROW_NUMBER() OVER (PARTITION BY receiver_id ORDER BY created_at DESC) AS rnum
         FROM messages
-        JOIN users ON messages.receiver_id = users.id
-        JOIN (
-            SELECT id, ROW_NUMBER() OVER (PARTITION BY receiver_id ORDER BY created_at DESC) AS rnum
-            FROM messages
-            WHERE deleted_at IS NULL
-        ) AS ranked ON ranked.id = messages.id
-        WHERE ranked.rnum = 1 AND messages.sender_id = ?
-    `
+        WHERE deleted_at IS NULL
+    ) AS ranked ON ranked.id = messages.id
+    WHERE ranked.rnum = 1 AND messages.sender_id = ?
+`
 
 	db := ug.Db.Raw(query, senderID).Scan(&messages)
 
@@ -67,10 +70,7 @@ func (ug *DbGorm) GetAllLinkedChat(senderID int) ([]Message, error) {
 		return nil, nil
 	}
 
-	// Affichez les résultats.
-	for _, row := range result {
-		fmt.Printf("Receiver: %s, Username: %s, Message: %s\n", row.Receiver, row.Username, row.Message)
-	}
+	fmt.Print(messages)
 
 	return messages, nil
 }

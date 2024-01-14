@@ -35,7 +35,7 @@ type EntityDB interface {
 	ByEmail(email string) (*User, error)
 	ByUserName(username string) ([]User, error)
 	CreateMessage(entity interface{}, w http.ResponseWriter) error
-	GetAllLinkedChat(senderID int) ([]Message, error)
+	GetAllLinkedChat(senderID int) ([]MessageChat, error)
 	GetAllMessagesFromUser(senderId string, receiverId string) ([]Message, error)
 	Close() error
 	Ping() error
