@@ -96,7 +96,7 @@ func (ug *DbGorm) Delete(entity interface{}, id string) (DeleteMessage, error) {
 }
 func (ug *DbGorm) GetAllMessagesFromUser(senderId string, receiverId string) ([]Message, error) {
 	var messages []Message
-	db := ug.Db.Table("messages").Where("sender_id = ? AND receiver_id = ?", senderId, receiverId).Limit(1000).Order("created_at").Scan(&messages)
+	db := ug.Db.Table("messages").Where("sender_id = ? AND receiver_id = ? OR sender_id = ? AND receiver_id = ?", senderId, receiverId, receiverId, senderId).Limit(1000).Order("created_at").Scan(&messages)
 	if db.Error != nil {
 		return nil, db.Error
 	}
