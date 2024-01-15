@@ -17,7 +17,7 @@ type Message struct {
 	Receiver_id int        `gorm:"not_null" validate:"required"`
 	Message     string     `gorm:"not_null" validate:"required"`
 	Id          int        `json:"id"`
-	CreatedAt   *time.Time `gorm:"type:timestamp"`
+	CreatedAt   *time.Time `gorm:"type:timestamp" json:"created_at"`
 	UpdatedAt   *time.Time `gorm:"type:timestamp;autoUpdateTime:true"`
 }
 
