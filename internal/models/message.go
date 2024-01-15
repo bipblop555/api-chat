@@ -16,6 +16,7 @@ type Message struct {
 	Sender_id   int        `gorm:"not_null" validate:"required"`
 	Receiver_id int        `gorm:"not_null" validate:"required"`
 	Message     string     `gorm:"not_null" validate:"required"`
+	Id          int        `json:"id"`
 	CreatedAt   *time.Time `gorm:"type:timestamp"`
 	UpdatedAt   *time.Time `gorm:"type:timestamp;autoUpdateTime:true"`
 }
@@ -24,6 +25,7 @@ type MessageChat struct {
 	Sender_id         int        `gorm:"not_null" validate:"required"`
 	Receiver_id       int        `gorm:"not_null" validate:"required"`
 	Message           string     `gorm:"not_null" validate:"required"`
+	Id                int        `json:"id"`
 	Receiver_username string     `gorm:"no_null"`
 	CreatedAt         *time.Time `gorm:"type:timestamp"`
 	UpdatedAt         *time.Time `gorm:"type:timestamp;autoUpdateTime:true"`

@@ -5,5 +5,6 @@ type MessageRessource struct {
 	Data    struct {
 		Sender_id int    `json:"sender_id"`
 		Message   string `json:"message"`
+		Id        int    `json:"id"`
 	} `json:"data"`
 }
